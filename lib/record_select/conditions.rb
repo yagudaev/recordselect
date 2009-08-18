@@ -28,6 +28,11 @@ module RecordSelect
       @like_operator ||= ::ActiveRecord::Base.connection.adapter_name == "PostgreSQL" ? "ILIKE" : "LIKE"
     end
 
+    # define special list of selected fields,
+    # mainly to define extra fields that can be used for 
+    # specialized sorting.
+    def record_select_select; end
+
     # generate conditions from params[:search]
     # override this if you want to customize the search routine
     def record_select_conditions_from_search

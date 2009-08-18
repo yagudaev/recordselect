@@ -8,6 +8,7 @@ module RecordSelect
       @count = klass.count(:conditions => conditions, :include => record_select_includes)
       pager = ::Paginator.new(@count, record_select_config.per_page) do |offset, per_page|
         klass.find(:all, :offset => offset,
+                         :select => record_select_select||"*",
                          :include => [record_select_includes, record_select_config.include].flatten.compact,
                          :limit => per_page,
                          :conditions => conditions,
