@@ -20,6 +20,14 @@ module RecordSelect
 
       @link = options[:link]
     end
+    
+    def self.js_framework=(framework)
+      @@js_framework = framework
+    end
+    
+    def self.js_framework
+      @@js_framework ||= :prototype
+    end
 
     # The model object we're browsing
     def model
