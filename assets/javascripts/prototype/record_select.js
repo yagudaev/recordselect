@@ -42,7 +42,12 @@ RecordSelect.notify = function(item) {
     return false;
   }
   else return true;
-}
+};
+
+RecordSelect.render_page = function(record_select_id, page) {
+  var page_element = $$('#' + record_select_id + ' ol')[0];
+  if (page_element) Element.replace(page_element, page);
+};
 
 RecordSelect.Abstract = Class.create();
 Object.extend(RecordSelect.Abstract.prototype, {

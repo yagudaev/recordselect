@@ -116,6 +116,10 @@ RecordSelect.notify = function(item) {
   else return true;
 }
 
+RecordSelect.render_page = function(record_select_id, page) {
+  $('#' + record_select_id + ' ol').first().replaceWith(page);
+};
+
 RecordSelect.Abstract = Class.extend({
   /**
    * obj - the id or element that will anchor the recordselect to the page
