@@ -52,7 +52,7 @@ module RecordSelect
     end
 
     def order_by
-      @order_by ||= "#{model.table_name}.#{model.primary_key} ASC"
+      @order_by ||= "#{model.table_name}.#{model.primary_key} ASC" unless @order_by == false
     end
 
     def full_text_search?
