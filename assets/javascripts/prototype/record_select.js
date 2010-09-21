@@ -1,6 +1,6 @@
 document.observe("dom:loaded", function() {
   RecordSelect.document_loaded = true;
-  document.on('ajax:before', 'div.record-select * li a', function(event) {
+  document.on('ajax:before', 'div.record-select * li.record a', function(event) {
     var link = event.findElement();
     if (link) {
       if (RecordSelect.notify(link) == false) {

@@ -65,7 +65,7 @@ if (typeof(Class) === 'undefined') {
 
 $(document).ready(function() {
   RecordSelect.document_loaded = true;
-  $('div.record-select * li a').live('ajax:before', function(event) {
+  $('div.record-select * li.record a').live('ajax:before', function(event) {
     var link = $(this);
     if (link) {
       if (RecordSelect.notify(link) == false) {
