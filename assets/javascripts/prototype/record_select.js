@@ -347,7 +347,6 @@ RecordSelect.Multiple.prototype = Object.extend(new RecordSelect.Abstract(), {
 
   onselect: function(id, value) {
     this.add(id, value);
-    this.close();
   },
 
   /**

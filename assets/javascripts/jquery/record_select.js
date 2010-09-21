@@ -421,7 +421,6 @@ RecordSelect.Multiple = RecordSelect.Abstract.extend({
 
   onselect: function(id, value) {
     this.add(id, value);
-    this.close();
   },
 
   /**
