@@ -5,6 +5,8 @@ ActionController::Base.send(:include, RecordSelect)
 ActionView::Base.send(:include, RecordSelectHelper)
 ActionView::Helpers::FormBuilder.send(:include, RecordSelect::FormBuilder)
 
+#RecordSelect::Config.js_framework = :jquery
+
 ['stylesheets', 'images', 'javascripts'].each do |asset_type|
   public_dir = File.join(Rails.root, 'public', asset_type, 'record_select')
   if asset_type == 'javascripts'
