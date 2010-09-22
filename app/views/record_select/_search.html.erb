@@ -4,13 +4,17 @@
   <%= submit_tag 'search', :class => "search_submit" %>
 </form>
 
-<% if RecordSelect::Config.js_framework == :prototype %>
-  <script type="text/javascript">
+<script type="text/javascript">
   //<![CDATA[
+<% if RecordSelect::Config.js_framework == :prototype %>
   var i = $(<%= record_select_search_id.to_json.html_safe %>).down('input.text-input');
   Form.Element.AfterActivity(i, function() {
       $(<%= record_select_search_id.to_json.html_safe -%>).down('input.search_submit').click();
   }, 0.35);
-  //]]>
-  </script>
+<% elsif RecordSelect::Config.js_framework == :jquery %>
+  $(<%= "##{record_select_search_id}".to_json.html_safe %>).find('input.text-input').delayedObserver(0.35, function() {
+     $(<%= "##{record_select_search_id}".to_json.html_safe %>).trigger("submit");});
 <% end %>
+  //]]>
+</script>
+  

@@ -63,6 +63,65 @@ if (typeof(Class) === 'undefined') {
   })();
 };
 
+/*
+ jQuery delayed observer
+ (c) 2007 - Maxime Haineault (max@centdessin.com)
+ 
+ Special thanks to Stephen Goguen & Tane Piper.
+ 
+ Slight modifications by Elliot Winkler
+*/
+
+if (typeof(jQuery.fn.delayedObserver) === 'undefined') { 
+  (function() {
+    var delayedObserverStack = [];
+    var observed;
+   
+    function delayedObserverCallback(stackPos) {
+      observed = delayedObserverStack[stackPos];
+      if (observed.timer) return;
+     
+      observed.timer = setTimeout(function(){
+        observed.timer = null;
+        observed.callback(observed.obj.val(), observed.obj);
+      }, observed.delay * 1000);
+  
+      observed.oldVal = observed.obj.val();
+    } 
+    
+    // going by
+    // <http://www.cambiaresearch.com/c4/702b8cd1-e5b0-42e6-83ac-25f0306e3e25/Javascript-Char-Codes-Key-Codes.aspx>
+    // I think these codes only work when using keyup or keydown
+    function isNonPrintableKey(event) {
+      var code = event.keyCode;
+      return (
+        (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey) ||
+        (code == 8 || code == 9 || code <= 16 || (code >= 91 && code <= 93) || (code >= 112 && code <= 145))
+      );
+    }
+   
+    jQuery.fn.extend({
+      delayedObserver:function(delay, callback){
+        $this = $(this);
+       
+        delayedObserverStack.push({
+          obj: $this, timer: null, delay: delay,
+          oldVal: $this.val(), callback: callback
+        });
+         
+        stackPos = delayedObserverStack.length-1;
+       
+        $this.keyup(function(event) {
+          if (isNonPrintableKey(event)) return;
+          observed = delayedObserverStack[stackPos];
+            if (observed.obj.val() == observed.obj.oldVal) return;
+            else delayedObserverCallback(stackPos);
+        });
+      }
+    });
+  })();
+};
+
 $(document).ready(function() {
   RecordSelect.document_loaded = true;
   $('div.record-select * li.record a').live('ajax:before', function(event) {
@@ -238,6 +297,11 @@ RecordSelect.Abstract = Class.extend({
     e.get(0).onselect = $.proxy(this, "onselect") 
     return e;
   },
+  
+  onkeyup: function(event) {
+    if (!this.is_open()) return;
+    this.container.find('.text-input').val(this.obj.val()).keyup();
+  },
 
   /**
    * all the behavior to respond to a text field as a search box
@@ -247,14 +311,11 @@ RecordSelect.Abstract = Class.extend({
     text_field.focus($.proxy(this, 'open'));
 
     // the autosearch event - needs to happen slightly late (keyup is later than keypress)
-    text_field.keyup($.proxy(function() {
-      if (!this.is_open()) return;
-      this.container.find('.text-input').value = text_field.value;
-    }), this);
+    text_field.keyup($.proxy(this, 'onkeyup'));
 
     // keyboard navigation, if available
     if (this.onkeypress) {
-      text_field.keypress(this, "onkeypress");
+      text_field.keypress($.proxy(this, "onkeypress"));
     }
   },
 
@@ -303,9 +364,9 @@ $.extend(RecordSelect.Abstract.prototype, {
         this.close();
         break;
       default:
-        return;
+        return true;
     }
-    ev.stopPropagation(); // so "enter" doesn't submit the form, among other things(?)
+    ev.preventDefault(); // so "enter" doesn't submit the form, among other things(?)
   },
 
   /**
@@ -362,8 +423,7 @@ RecordSelect.Single = RecordSelect.Abstract.extend({
     this.set(this.options.id, this.options.label);
 
     this._respond_to_text_field(this.obj);
-    // What is focused ?? if (this.obj.focused) this.open(); // if it was focused before we could attach observers
-    this.open();
+    if (this.obj.focused) this.open(); // if it was focused before we could attach observers
   },
 
   close: function() {
@@ -415,8 +475,7 @@ RecordSelect.Multiple = RecordSelect.Abstract.extend({
     }
 
     this._respond_to_text_field(this.obj);
-    // What is focused ?? if (this.obj.focused) this.open(); // if it was focused before we could attach observers
-    this.open(); // if it was focused before we could attach observers
+    if (this.obj.focused) this.open(); // if it was focused before we could attach observers
   },
 
   onselect: function(id, value) {
