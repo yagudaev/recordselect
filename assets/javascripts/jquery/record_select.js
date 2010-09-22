@@ -96,7 +96,7 @@ if (typeof(jQuery.fn.delayedObserver) === 'undefined') {
       var code = event.keyCode;
       return (
         (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey) ||
-        (code == 8 || code == 9 || code <= 16 || (code >= 91 && code <= 93) || (code >= 112 && code <= 145))
+        (code == 8 || code == 9 || code <= 16 || (code >= 27 && code <= 40) || (code >= 91 && code <= 93) || (code >= 112 && code <= 145))
       );
     }
    
@@ -300,7 +300,7 @@ RecordSelect.Abstract = Class.extend({
   
   onkeyup: function(event) {
     if (!this.is_open()) return;
-    this.container.find('.text-input').val(this.obj.val()).keyup();
+    this.container.find('.text-input').val(this.obj.val()).trigger(event);
   },
 
   /**
@@ -338,29 +338,29 @@ $.extend(RecordSelect.Abstract.prototype, {
   onkeypress: function(ev) {
     var elem;
     switch (ev.keyCode) {
-      case Event.KEY_UP:
+      case 38: //Event.KEY_UP
         if (this.current && this.current.closest('.record-select')) elem = this.current.prev();
         if (!elem) elem = this.container.find('ol li.record').last();
         this.highlight(elem);
         break;
-      case Event.KEY_DOWN:
+      case 40: //Event.KEY_DOWN
         if (this.current && this.current.closest('.record-select')) elem = this.current.next();
         if (!elem) elem = this.container.find('ol li.record').first();
         this.highlight(elem);
         break;
-      case Event.KEY_SPACE:
-      case Event.KEY_RETURN:
-        if (this.current) this.current.find('a').onclick();
+      case 32: // Event.KEY_SPACE
+      case 13: // Event.KEY_RETURN
+        if (this.current) this.current.find('a').click();
         break;
-      case Event.KEY_RIGHT:
+      case 39: // Event.KEY_RIGHT
         elem = this.container.find('li.pagination.next');
-        if (elem) elem.find('a').onclick();
+        if (elem) elem.find('a').click();
         break;
-      case Event.KEY_LEFT:
+      case 37: // Event.KEY_LEFT
         elem = this.container.find('li.pagination.previous');
-        if (elem) elem.find('a').onclick();
+        if (elem) elem.find('a').click();
         break;
-      case Event.KEY_ESC:
+      case 27: // Event.KEY_ESC
         this.close();
         break;
       default:
