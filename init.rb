@@ -5,7 +5,13 @@ ActionController::Base.send(:include, RecordSelect)
 ActionView::Base.send(:include, RecordSelectHelper)
 ActionView::Helpers::FormBuilder.send(:include, RecordSelect::FormBuilder)
 
-#RecordSelect::Config.js_framework = :jquery
+# if ActiveScaffold is installed use same js_framework
+if defined? ActiveScaffold
+  RecordSelect::Config.js_framework = ActiveScaffold.js_framework
+else
+  #RecordSelect::Config.js_framework = :jquery
+end
+
 
 ['stylesheets', 'images', 'javascripts'].each do |asset_type|
   public_dir = File.join(Rails.root, 'public', asset_type, 'record_select')
