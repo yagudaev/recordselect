@@ -95,8 +95,8 @@ if (typeof(jQuery.fn.delayedObserver) === 'undefined') {
     function isNonPrintableKey(event) {
       var code = event.keyCode;
       return (
-        (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey) ||
-        (code == 8 || code == 9 || code <= 16 || (code >= 27 && code <= 40) || (code >= 91 && code <= 93) || (code >= 112 && code <= 145))
+        event.metaKey ||
+        (code >= 9 || code <= 16) || (code >= 27 && code <= 40) || (code >= 91 && code <= 93) || (code >= 112 && code <= 145)
       );
     }
    
