@@ -292,9 +292,10 @@ RecordSelect.Abstract = Class.extend({
    * creates and initializes (and returns) the recordselect container
    */
   create_container: function() {
-    $(document.body).append('<div class="record-select-container record-select-handler"></div>');
-    e = $(document.body).find('div.record-select-container').css('display', 'none')
-    e.get(0).onselect = $.proxy(this, "onselect") 
+    var e = $("<div />", {class: "record-select-container record-select-handler"});
+    e.css('display', 'none')
+    $(document.body).append(e);
+    e.get(0).onselect = $.proxy(this, "onselect")
     return e;
   },
   
