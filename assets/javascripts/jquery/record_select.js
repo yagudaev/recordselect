@@ -195,7 +195,7 @@ RecordSelect.Abstract = Class.extend({
     if (RecordSelect.document_loaded) {
       this.onload();
     } else {
-      Event.observe(window, 'load', this.onload.bind(this));
+      var _this = this; $(document).ready(function() { _this.onload(); })
     }
   },
 
