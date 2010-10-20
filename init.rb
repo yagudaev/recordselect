@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/lib/localization'
 require File.dirname(__FILE__) + '/lib/extensions/active_record'
+require File.dirname(__FILE__) + '/lib/extensions/routing_mapper'
 
 ActionController::Base.send(:include, RecordSelect)
 ActionView::Base.send(:include, RecordSelectHelper)
