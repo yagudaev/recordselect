@@ -14,6 +14,7 @@ require './lib/record_select/version.rb'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "recordselect_vho"
+  gem.version = RecordSelect::Version::STRING
   gem.homepage = "http://github.com/vhochstein/recordselect"
   gem.license = "MIT"
   gem.summary = %Q{RecordSelect widget as a replacement for massive drop down lists}
