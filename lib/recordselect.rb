@@ -1,13 +1,13 @@
 require 'record_select_assets'
 require 'record_select'
-require File.dirname(__FILE__) + '/extensions/localization'
-require File.dirname(__FILE__) + '/extensions/active_record'
-require File.dirname(__FILE__) + '/extensions/routing_mapper'
-require File.dirname(__FILE__) + '/record_select/actions'
-require File.dirname(__FILE__) + '/record_select/conditions'
-require File.dirname(__FILE__) + '/record_select/config'
-require File.dirname(__FILE__) + '/record_select/form_builder'
-require File.dirname(__FILE__) + '/../app/helpers/record_select_helper'
+require 'extensions/localization'
+require 'extensions/active_record'
+require 'extensions/routing_mapper'
+require 'record_select/actions'
+require 'record_select/conditions'
+require 'record_select/config'
+require 'record_select/form_builder'
+require 'record_select/helpers/record_select_helper'
 
 ActionController::Base.send(:include, RecordSelect)
 ActionView::Base.send(:include, RecordSelectHelper)
@@ -19,4 +19,4 @@ Rails::Application.initializer("recordselect.install_assets") do
   rescue
     raise $! unless Rails.env == 'production'
   end
-end unless defined?(RECORD_SELECT_INSTALLED) && RECORD_SELECT_INSTALLED == :plugin
+end if defined?(RECORD_SELECT_GEM)

@@ -1,5 +1,3 @@
-RECORD_SELECT_INSTALLED = :plugin
-
 require 'recordselect'
 
 begin

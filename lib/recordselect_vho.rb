@@ -1,2 +1,2 @@
-RECORD_SELECT_INSTALLED = :gem
+RECORD_SELECT_GEM = true
 require 'recordselect'
