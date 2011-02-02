@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{recordselect_vho}
-  s.version = "3.0.1"
+  s.version = "3.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Volker Hochstein", "Lance Ivy"]
-  s.date = %q{2011-02-01}
+  s.date = %q{2011-02-02}
   s.description = %q{RecordSelect is a Rails widget to help you pick one record out of many. I designed it as a more usable and performant alternative to generating a massive dropdown list}
   s.email = %q{activescaffold@googlegroups.com}
   s.extra_rdoc_files = [
@@ -34,13 +34,13 @@ Gem::Specification.new do |s|
     "assets/stylesheets/record_select.css",
     "init.rb",
     "install.rb",
-    "lib/extensions/active_record.rb",
-    "lib/extensions/localization.rb",
-    "lib/extensions/routing_mapper.rb",
     "lib/record_select.rb",
     "lib/record_select/actions.rb",
     "lib/record_select/conditions.rb",
     "lib/record_select/config.rb",
+    "lib/record_select/extensions/active_record.rb",
+    "lib/record_select/extensions/localization.rb",
+    "lib/record_select/extensions/routing_mapper.rb",
     "lib/record_select/form_builder.rb",
     "lib/record_select/helpers/record_select_helper.rb",
     "lib/record_select/version.rb",
