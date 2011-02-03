@@ -30,7 +30,12 @@ module RecordSelect
       search_pattern = record_select_config.full_text_search? ? '%?%' : '?%'
 
       if params[:search] and !params[:search].strip.empty?
-        tokens = params[:search].strip.split(' ')
+        if record_select_config.full_text_search?
+          tokens = params[:search].strip.split(' ')
+        else
+          tokens = []
+          tokens << params[:search].strip
+        end
 
         where_clauses = record_select_config.search_on.collect { |sql| "#{sql} LIKE ?" }
         phrase = "(#{where_clauses.join(' OR ')})"
