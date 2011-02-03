@@ -349,7 +349,6 @@ $.extend(RecordSelect.Abstract.prototype, {
         if (!elem) elem = this.container.find('ol li.record').first();
         this.highlight(elem);
         break;
-      case 32: // Event.KEY_SPACE
       case 13: // Event.KEY_RETURN
         if (this.current) this.current.find('a').click();
         break;
