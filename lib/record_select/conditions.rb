@@ -24,6 +24,10 @@ module RecordSelect
     # define any association includes you want for the finder search.
     def record_select_includes; end
 
+    def record_select_like_operator
+      @like_operator ||= ::ActiveRecord::Base.connection.adapter_name == "PostgreSQL" ? "ILIKE" : "LIKE"
+    end
+
     # generate conditions from params[:search]
     # override this if you want to customize the search routine
     def record_select_conditions_from_search
@@ -37,11 +41,11 @@ module RecordSelect
           tokens << params[:search].strip
         end
 
-        where_clauses = record_select_config.search_on.collect { |sql| "#{sql} LIKE ?" }
+        where_clauses = record_select_config.search_on.collect { |sql| "#{sql} #{record_select_like_operator} ?" }
         phrase = "(#{where_clauses.join(' OR ')})"
 
         sql = ([phrase] * tokens.length).join(' AND ')
-        tokens = tokens.collect{ |value| [search_pattern.sub('?', value.downcase)] * record_select_config.search_on.length }.flatten
+        tokens = tokens.collect{ |value| [search_pattern.sub('?', value)] * record_select_config.search_on.length }.flatten
 
         conditions = [sql, *tokens]
       end
