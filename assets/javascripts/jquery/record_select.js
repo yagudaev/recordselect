@@ -434,8 +434,8 @@ RecordSelect.Single = RecordSelect.Abstract.extend({
   },
 
   onselect: function(id, value) {
-    if (this.options.onchange) this.options.onchange(id, value);
     this.set(id, value);
+    if (this.options.onchange) this.options.onchange(id, value);
     this.close();
   },
 
