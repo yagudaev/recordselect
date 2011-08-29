@@ -1,7 +1,7 @@
 module RecordSelect
   def self.included(base)
     base.send :extend, ClassMethods
-    base.append_view_path "#{File.dirname(__FILE__)}/../app/views" if defined?(RECORD_SELECT_GEM)
+    #base.append_view_path "#{File.dirname(__FILE__)}/../app/views" if defined?(RECORD_SELECT_GEM)
   end
 
   module ClassMethods
