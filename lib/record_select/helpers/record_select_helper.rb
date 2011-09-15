@@ -1,13 +1,4 @@
 module RecordSelectHelper
-  # Print this from your layout to include everything necessary for RecordSelect to work.
-  # Well, not everything. You need Prototype too.
-  def record_select_includes
-    includes = ''
-    includes << stylesheet_link_tag('record_select/record_select')
-    includes << javascript_include_tag('record_select/record_select')
-    includes.html_safe
-  end
-
   # Adds a link on the page that toggles a RecordSelect widget from the given controller.
   #
   # *Options*
