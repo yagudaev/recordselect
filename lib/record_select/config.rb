@@ -26,7 +26,11 @@ module RecordSelect
     end
     
     def self.js_framework
-      @@js_framework ||= :prototype
+      @@js_framework ||= if defined? Jquery
+        :jquery
+      elsif defined? PrototypeRails
+        :prototype
+      end
     end
 
     # The model object we're browsing
