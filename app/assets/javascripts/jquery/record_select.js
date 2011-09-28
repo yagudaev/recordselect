@@ -236,9 +236,12 @@ RecordSelect.Abstract = Class.extend({
    * positions and reveals the recordselect
    */
   show: function() {
-    var offset = this.obj.offset();
-    this.container.css('left', offset.left)
-                  .css('top', (this.obj.height() + offset.top));
+    var offset = this.obj.offset(), top = this.obj.height() + offset.top;
+    this.container.show();
+    this.container.css('left', offset.left);
+    if (top + this.container.height() > $(document).height())
+      this.container.css('top', offset.top - this.container.height());
+    else this.container.css('top', top);
 
     if (this._use_iframe_mask()) {
       this.container.after('<iframe src="javascript:false;" class="record-select-mask" />');
@@ -246,8 +249,6 @@ RecordSelect.Abstract = Class.extend({
       mask.css('left', this.container.css('left'))
           .css('top', this.container.css('top'));
     }
-
-    this.container.show();
 
     if (this._use_iframe_mask()) {
       var dimensions = this.container.children().first();
