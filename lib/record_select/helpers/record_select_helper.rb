@@ -29,24 +29,58 @@ module RecordSelectHelper
   # +controller+::  The controller configured to provide the result set. Optional if you have standard resource controllers (e.g. UsersController for the User model), in which case the controller will be inferred from the class of +current+ (the second argument)
   # +params+::      A hash of extra URL parameters
   # +id+::          The id to use for the input. Defaults based on the input's name.
+  # +field_name+::  The name to use for the text input. Defaults to '', so field is not submitted.
   # +onchange+::    A JavaScript function that will be called whenever something new is selected. It should accept the new id as the first argument, and the new label as the second argument. For example, you could set onchange to be "function(id, label) {alert(id);}", or you could create a JavaScript function somewhere else and set onchange to be "my_function" (without the parantheses!).
   def record_select_field(name, current, options = {})
     options[:controller] ||= current.class.to_s.pluralize.underscore
     options[:params] ||= {}
     options[:id] ||= name.gsub(/[\[\]]/, '_')
 
+    id = options.delete(:id)
+    html = text_field_tag(name, nil, :autocomplete => 'off', :id => id, :class => options.delete(:class), :onfocus => "this.focused=true", :onblur => "this.focused=false")
+
     controller = assert_controller_responds(options[:controller])
 
-    id = label = ''
+    options[:id] = options[:label] = ''
     if current and not current.new_record?
-      id = current.id
-      label = label_for_field(current, controller)
+      options[:id] = current.id
+      options[:label] = label_for_field(current, controller)
     end
 
-    url = url_for({:action => :browse, :controller => options[:controller], :escape => false}.merge(options[:params]))
+    url = url_for({:action => :browse, :controller => options.delete(:controller), :escape => false}.merge(options.delete(:params)))
+    html << javascript_tag("new RecordSelect.Single(#{id.to_json}, #{url.to_json}, #{options.to_json});")
 
-    html = text_field_tag(name, nil, :autocomplete => 'off', :id => options[:id], :class => options[:class], :onfocus => "this.focused=true", :onblur => "this.focused=false")
-    html << javascript_tag("new RecordSelect.Single(#{options[:id].to_json}, #{url.to_json}, {id: #{id.to_json}, label: #{label.to_json}, onchange: #{options[:onchange] || ''.to_json}});")
+    return html
+  end
+
+  # Adds a RecordSelect-based form field. The field is autocompleted.
+  #
+  # *Arguments*
+  # +name+:: the input name that will be used to submit the selected value.
+  # +current+:: the current object. provide a new record if there're none currently selected and you have not passed the optional :controller argument.
+  #
+  # *Options*
+  # +controller+::  The controller configured to provide the result set. Optional if you have standard resource controllers (e.g. UsersController for the User model), in which case the controller will be inferred from the class of +current+ (the second argument)
+  # +params+::      A hash of extra URL parameters
+  # +id+::          The id to use for the input. Defaults based on the input's name.
+  # +onchange+::    A JavaScript function that will be called whenever something new is selected. It should accept the new id as the first argument, and the new label as the second argument. For example, you could set onchange to be "function(id, label) {alert(id);}", or you could create a JavaScript function somewhere else and set onchange to be "my_function" (without the parantheses!).
+  def record_select_autocomplete(name, current, options = {})
+    options[:controller] ||= current.class.to_s.pluralize.underscore
+    options[:params] ||= {}
+    options[:id] ||= name.gsub(/[\[\]]/, '_')
+
+    id = options.delete(:id)
+    html = text_field_tag(name, nil, :autocomplete => 'off', :id => id, :class => options.delete(:class), :onfocus => "this.focused=true", :onblur => "this.focused=false")
+
+    controller = assert_controller_responds(options[:controller])
+
+    options[:label] = ''
+    if current and not current.new_record?
+      options[:label] = label_for_field(current, controller)
+    end
+
+    url = url_for({:action => :browse, :controller => options.delete(:controller), :escape => false}.merge(options.delete(:params)))
+    html << javascript_tag("new RecordSelect.Autocomplete(#{id.to_json}, #{url.to_json}, #{options.to_json});")
 
     return html
   end

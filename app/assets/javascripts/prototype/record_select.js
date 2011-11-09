@@ -269,7 +269,8 @@ RecordSelect.Dialog.prototype = Object.extend(new RecordSelect.Abstract(), {
 /**
  * Used by record_select_field helper
  * The options hash may contain id: and label: keys, designating the current value
- * The options hash may also include an onchange: key, where the value is a javascript function (or eval-able string) for an callback routine.
+ * The options hash may also include an onchange: key, where the value is a javascript function (or eval-able string) for an callback routine
+ * and field_name: key, where value will be set as name of the input field.
  */
 RecordSelect.Single = Class.create();
 RecordSelect.Single.prototype = Object.extend(new RecordSelect.Abstract(), {
@@ -284,7 +285,7 @@ RecordSelect.Single.prototype = Object.extend(new RecordSelect.Abstract(), {
 
     // transfer the input name from the text input to the hidden input
     this.hidden_input.name = this.obj.name;
-    this.obj.name = '';
+    this.obj.name = this.options.field_name || '';
 
     // initialize the values
     this.set(this.options.id, this.options.label);
@@ -312,6 +313,46 @@ RecordSelect.Single.prototype = Object.extend(new RecordSelect.Abstract(), {
   set: function(id, label) {
     this.obj.value = label.unescapeHTML();
     this.hidden_input.value = id;
+  }
+});
+
+/**
+ * Used by record_select_autocomplete helper
+ * The options hash may contain label: key, designating the current value
+ * The options hash may also include an onchange: key, where the value is a javascript function (or eval-able string) for an callback routine.
+ */
+RecordSelect.Autocomplete = Class.create();
+RecordSelect.Autocomplete.prototype = Object.extend(new RecordSelect.Abstract(), {
+  onload: function() {
+    // initialize the container
+    this.container = this.create_container();
+    this.container.addClassName('record-select-autocomplete');
+
+    // initialize the values
+    this.set(this.options.label);
+
+    this._respond_to_text_field(this.obj);
+    if (this.obj.focused) this.open(); // if it was focused before we could attach observers
+  },
+
+  close: function() {
+    // if they close the dialog with the text field empty, then delete the id value
+    if (this.obj.value == '') this.set('', '');
+
+    RecordSelect.Abstract.prototype.close.call(this);
+  },
+
+  onselect: function(id, value) {
+    this.set(value);
+    if (this.options.onchange) this.options.onchange.call(this, id, value);
+    this.close();
+  },
+
+  /**
+   * sets the id/label
+   */
+  set: function(label) {
+    this.obj.value = label.unescapeHTML();
   }
 });
 

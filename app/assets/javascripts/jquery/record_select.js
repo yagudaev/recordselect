@@ -404,7 +404,8 @@ RecordSelect.Dialog = RecordSelect.Abstract.extend({
 /**
  * Used by record_select_field helper
  * The options hash may contain id: and label: keys, designating the current value
- * The options hash may also include an onchange: key, where the value is a javascript function (or eval-able string) for an callback routine.
+ * The options hash may also include an onchange: key, where the value is a javascript function (or eval-able string) for an callback routine
+ * and field_name: key, where value will be set as name of the input field.
  */
 RecordSelect.Single = RecordSelect.Abstract.extend({
   onload: function() {
@@ -418,7 +419,7 @@ RecordSelect.Single = RecordSelect.Abstract.extend({
 
     // transfer the input name from the text input to the hidden input
     this.hidden_input.attr('name', this.obj.attr('name'));
-    this.obj.attr('name', '');
+    this.obj.attr('name', this.options.field_name || '');
 
     // initialize the values
     this.set(this.options.id, this.options.label);
@@ -447,6 +448,46 @@ RecordSelect.Single = RecordSelect.Abstract.extend({
     // unescaped html missing for label
     this.obj.val(label); 
     this.hidden_input.val(id);
+  }
+});
+
+/**
+ * Used by record_select_autocomplete helper
+ * The options hash may contain label: key, designating the current value
+ * The options hash may also include an onchange: key, where the value is a javascript function (or eval-able string) for an callback routine.
+ */
+RecordSelect.Autocomplete = RecordSelect.Abstract.extend({
+  onload: function() {
+    // initialize the container
+    this.container = this.create_container();
+    this.container.addClass('record-select-autocomplete');
+
+    // initialize the values
+    this.set(this.options.label);
+
+    this._respond_to_text_field(this.obj);
+    if (this.obj.focused) this.open(); // if it was focused before we could attach observers
+  },
+
+  close: function() {
+    // if they close the dialog with the text field empty, then delete the id value
+    if (this.obj.val() == '') this.set('');
+
+    RecordSelect.Abstract.prototype.close.call(this);
+  },
+
+  onselect: function(id, value) {
+    this.set(value);
+    if (this.options.onchange) this.options.onchange.call(this, id, value);
+    this.close();
+  },
+
+  /**
+   * sets the id/label
+   */
+  set: function(label) {
+    // unescaped html missing for label
+    this.obj.val(label); 
   }
 });
 
