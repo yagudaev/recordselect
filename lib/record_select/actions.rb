@@ -4,7 +4,7 @@ module RecordSelect
     # params => [:page, :search]
     def browse
       conditions = record_select_conditions
-      klass = record_select_config.model
+      klass = record_select_model
       @count = klass.count(:conditions => conditions, :include => record_select_includes)
       pager = ::Paginator.new(@count, record_select_config.per_page) do |offset, per_page|
         klass.find(:all, :offset => offset,
@@ -34,7 +34,7 @@ module RecordSelect
     # :method => :post
     # params => [:id]
     def select
-      klass = record_select_config.model
+      klass = record_select_model
       record = klass.find(params[:id])
       if record_select_config.notify.is_a? Proc
         record_select_config.notify.call(record)
@@ -64,5 +64,9 @@ module RecordSelect
     def record_select_views_path
       "record_select"
     end
+  end
+
+  def record_select_model
+    record_select_config.model
   end
 end
