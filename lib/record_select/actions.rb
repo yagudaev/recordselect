@@ -6,6 +6,7 @@ module RecordSelect
       conditions = record_select_conditions
       klass = record_select_model
       @count = klass.count(:conditions => conditions, :include => record_select_includes)
+      @count = @count.length if @count.is_a? ActiveSupport::OrderedHash
       pager = ::Paginator.new(@count, record_select_config.per_page) do |offset, per_page|
         klass.find(:all, :offset => offset,
                          :select => record_select_select||"*",
