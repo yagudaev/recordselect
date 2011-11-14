@@ -188,7 +188,7 @@ RecordSelect.Abstract = Class.extend({
     this.url = url;
     this.options = options;
     this.container;
-    if (this.options.onchange && typeof(this.options.onchange) == 'string') {
+    if (this.options.onchange && typeof this.options.onchange != 'function') {
       this.options.onchange = eval(this.options.onchange);
     }
 
@@ -438,6 +438,7 @@ RecordSelect.Single = RecordSelect.Abstract.extend({
   onselect: function(id, value) {
     this.set(id, value);
     if (this.options.onchange) this.options.onchange.call(this, id, value);
+    this.obj.trigger("recordselect:change", [id, value]);
     this.close();
   },
 
@@ -479,6 +480,7 @@ RecordSelect.Autocomplete = RecordSelect.Abstract.extend({
   onselect: function(id, value) {
     this.set(value);
     if (this.options.onchange) this.options.onchange.call(this, id, value);
+    this.obj.trigger("recordselect:change", [id, value]);
     this.close();
   },
 

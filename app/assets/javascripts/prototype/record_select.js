@@ -61,7 +61,7 @@ Object.extend(RecordSelect.Abstract.prototype, {
     this.url = url;
     this.options = options;
     this.container;
-    if (this.options.onchange && typeof(this.options.onchange) == 'string') {
+    if (this.options.onchange && typeof this.options.onchange != 'function') {
       this.options.onchange = eval(this.options.onchange);
     }
 
@@ -307,6 +307,7 @@ RecordSelect.Single.prototype = Object.extend(new RecordSelect.Abstract(), {
   onselect: function(id, value) {
     this.set(id, value);
     if (this.options.onchange) this.options.onchange.call(this, id, value);
+    this.obj.fire('recordselect:change', {"id": id, "label": value});
     this.close();
   },
 
@@ -348,6 +349,7 @@ RecordSelect.Autocomplete.prototype = Object.extend(new RecordSelect.Abstract(),
   onselect: function(id, value) {
     this.set(value);
     if (this.options.onchange) this.options.onchange.call(this, id, value);
+    this.obj.fire('recordselect:change', {"id": id, "label": value});
     this.close();
   },
 

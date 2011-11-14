@@ -35,20 +35,21 @@ module RecordSelectHelper
     options[:controller] ||= current.class.to_s.pluralize.underscore
     options[:params] ||= {}
     options[:id] ||= name.gsub(/[\[\]]/, '_')
+    options[:class] ||= ''
+    options[:class] << ' recordselect'
 
-    id = options.delete(:id)
-    html = text_field_tag(name, nil, :autocomplete => 'off', :id => id, :class => options.delete(:class), :onfocus => "this.focused=true", :onblur => "this.focused=false")
-
-    controller = assert_controller_responds(options[:controller])
-
-    options[:id] = options[:label] = ''
+    controller = assert_controller_responds(options.delete(:controller))
+    params = options.delete(:params)
+    record_select_options = {}
+    record_select_options[:field_name] = options.delete(:field_name) if options[:field_name]
     if current and not current.new_record?
-      options[:id] = current.id
-      options[:label] = label_for_field(current, controller)
+      record_select_options[:id] = current.id
+      record_select_options[:label] = label_for_field(current, controller)
     end
 
-    url = url_for({:action => :browse, :controller => options.delete(:controller), :escape => false}.merge(options.delete(:params)))
-    html << javascript_tag("new RecordSelect.Single(#{id.to_json}, #{url.to_json}, #{options.to_json});")
+    html = text_field_tag(name, nil, options.merge(:autocomplete => 'off', :onfocus => "this.focused=true", :onblur => "this.focused=false"))
+    url = url_for({:action => :browse, :controller => controller.controller_path, :escape => false}.merge(params))
+    html << javascript_tag("new RecordSelect.Single(#{options[:id].to_json}, #{url.to_json}, #{record_select_options.to_json});")
 
     return html
   end
@@ -68,19 +69,19 @@ module RecordSelectHelper
     options[:controller] ||= current.class.to_s.pluralize.underscore
     options[:params] ||= {}
     options[:id] ||= name.gsub(/[\[\]]/, '_')
+    options[:class] ||= ''
+    options[:class] << ' recordselect'
 
-    id = options.delete(:id)
-    html = text_field_tag(name, nil, :autocomplete => 'off', :id => id, :class => options.delete(:class), :onfocus => "this.focused=true", :onblur => "this.focused=false")
-
-    controller = assert_controller_responds(options[:controller])
-
-    options[:label] = ''
+    controller = assert_controller_responds(options.delete(:controller))
+    params = options.delete(:params)
+    record_select_options = {}
     if current and not current.new_record?
-      options[:label] = label_for_field(current, controller)
+      record_select_options[:label] = label_for_field(current, controller)
     end
 
-    url = url_for({:action => :browse, :controller => options.delete(:controller), :escape => false}.merge(options.delete(:params)))
-    html << javascript_tag("new RecordSelect.Autocomplete(#{id.to_json}, #{url.to_json}, #{options.to_json});")
+    html = text_field_tag(name, nil, options.merge(:autocomplete => 'off', :onfocus => "this.focused=true", :onblur => "this.focused=false"))
+    url = url_for({:action => :browse, :controller => controller.controller_path, :escape => false}.merge(params))
+    html << javascript_tag("new RecordSelect.Autocomplete(#{options[:id].to_json}, #{url.to_json}, #{record_select_options.to_json});")
 
     return html
   end
@@ -116,19 +117,22 @@ module RecordSelectHelper
     options[:controller] ||= current.first.class.to_s.pluralize.underscore
     options[:params] ||= {}
     options[:id] ||= name.gsub(/[\[\]]/, '_')
+    options[:class] ||= ''
+    options[:class] << ' recordselect'
+    options.delete(:name)
 
-    controller = assert_controller_responds(options[:controller])
+    controller = assert_controller_responds(options.delete(:controller))
+    params = options.delete(:params)
+    record_select_options = {}
+    record_select_options[:current] = current.inject([]) { |memo, record| memo.push({:id => record.id, :label => label_for_field(record, controller)}) }
+
+    html = text_field_tag("#{name}[]", nil, options.merge(:autocomplete => 'off', :onfocus => "this.focused=true", :onblur => "this.focused=false"))
+    html << content_tag('ul', '', :class => 'record-select-list');
 
     # js identifier so we can talk to it.
     widget = "rs_%s" % name.gsub(/[\[\]]/, '_').chomp('_')
-
-    current = current.inject([]) { |memo, record| memo.push({:id => record.id, :label => label_for_field(record, controller)}) }
-
-    url = url_for({:action => :browse, :controller => options[:controller], :escape => false}.merge(options[:params]))
-
-    html = text_field_tag("#{name}[]", nil, :autocomplete => 'off', :id => options[:id], :class => options[:class], :onfocus => "this.focused=true", :onblur => "this.focused=false")
-    html << content_tag('ul', '', :class => 'record-select-list');
-    html << javascript_tag("#{widget} = new RecordSelect.Multiple(#{options[:id].to_json}, #{url.to_json}, {current: #{current.to_json}});")
+    url = url_for({:action => :browse, :controller => controller.controller_path, :escape => false}.merge(params))
+    html << javascript_tag("#{widget} = new RecordSelect.Multiple(#{options[:id].to_json}, #{url.to_json}, #{record_select_options.to_json});")
 
     return html
   end
