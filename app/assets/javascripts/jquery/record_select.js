@@ -161,11 +161,8 @@ RecordSelect.notify = function(item) {
   if (onselect)
   {
     try {
-      // .unescapeHTML() not implemented so far
-      var label = $.trim(item.find('label').first().html());
-      if (label.length == 0) {
-        label = item.html();
-      }
+      var label = $.trim(item.find('label').first().text());
+      if (!label) label = item.text();
       onselect(item.parent().attr('id').substr(2), label, e);
     } catch(e) {
       alert(e);
