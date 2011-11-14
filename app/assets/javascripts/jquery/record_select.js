@@ -188,6 +188,9 @@ RecordSelect.Abstract = Class.extend({
     this.url = url;
     this.options = options;
     this.container;
+    if (this.options.onchange && typeof(this.options.onchange) == 'string') {
+      this.options.onchange = eval(this.options.onchange);
+    }
 
     if (RecordSelect.document_loaded) {
       this.onload();
