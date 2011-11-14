@@ -30,13 +30,14 @@ module RecordSelectHelper
   # +params+::      A hash of extra URL parameters
   # +id+::          The id to use for the input. Defaults based on the input's name.
   # +field_name+::  The name to use for the text input. Defaults to '', so field is not submitted.
-  # +onchange+::    A JavaScript function that will be called whenever something new is selected. It should accept the new id as the first argument, and the new label as the second argument. For example, you could set onchange to be "function(id, label) {alert(id);}", or you could create a JavaScript function somewhere else and set onchange to be "my_function" (without the parantheses!).
   def record_select_field(name, current, options = {})
     options[:controller] ||= current.class.to_s.pluralize.underscore
     options[:params] ||= {}
     options[:id] ||= name.gsub(/[\[\]]/, '_')
     options[:class] ||= ''
     options[:class] << ' recordselect'
+
+    ActiveSupport::Deprecation.warn 'onchange option is deprecated. Bind recordselect:change event instead.' if options[:onchange]
 
     controller = assert_controller_responds(options.delete(:controller))
     params = options.delete(:params)
@@ -64,13 +65,14 @@ module RecordSelectHelper
   # +controller+::  The controller configured to provide the result set. Optional if you have standard resource controllers (e.g. UsersController for the User model), in which case the controller will be inferred from the class of +current+ (the second argument)
   # +params+::      A hash of extra URL parameters
   # +id+::          The id to use for the input. Defaults based on the input's name.
-  # +onchange+::    A JavaScript function that will be called whenever something new is selected. It should accept the new id as the first argument, and the new label as the second argument. For example, you could set onchange to be "function(id, label) {alert(id);}", or you could create a JavaScript function somewhere else and set onchange to be "my_function" (without the parantheses!).
   def record_select_autocomplete(name, current, options = {})
     options[:controller] ||= current.class.to_s.pluralize.underscore
     options[:params] ||= {}
     options[:id] ||= name.gsub(/[\[\]]/, '_')
     options[:class] ||= ''
     options[:class] << ' recordselect'
+
+    ActiveSupport::Deprecation.warn 'onchange option is deprecated. Bind recordselect:change event instead.' if options[:onchange]
 
     controller = assert_controller_responds(options.delete(:controller))
     params = options.delete(:params)
