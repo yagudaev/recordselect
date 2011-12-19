@@ -79,7 +79,7 @@ if (typeof(jQuery.fn.delayedObserver) === 'undefined') {
    
     function delayedObserverCallback(stackPos) {
       observed = delayedObserverStack[stackPos];
-      if (observed.timer) return;
+      if (observed.timer) clearTimeout(observed.timer);
      
       observed.timer = setTimeout(function(){
         observed.timer = null;
@@ -284,7 +284,7 @@ RecordSelect.Abstract = Class.extend({
     if (!this.is_open()) return;
     if (this.container.has($(event.target)).length > 0) {
       return;
-    } else {
+    } else if (!this.obj.is(event.target)) {
       this.close();
     }
   },
