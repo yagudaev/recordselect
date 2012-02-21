@@ -341,12 +341,12 @@ $.extend(RecordSelect.Abstract.prototype, {
     var elem;
     switch (ev.keyCode) {
       case 38: //Event.KEY_UP
-        if (this.current && this.current.closest('.record-select')) elem = this.current.prev();
+        if (this.current && this.current.closest('html').length) elem = this.current.prev();
         if (!elem) elem = this.container.find('ol li.record').last();
         this.highlight(elem);
         break;
       case 40: //Event.KEY_DOWN
-        if (this.current && this.current.closest('.record-select')) elem = this.current.next();
+        if (this.current && this.current.closest('html').length) elem = this.current.next();
         if (!elem) elem = this.container.find('ol li.record').first();
         this.highlight(elem);
         break;
