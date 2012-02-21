@@ -105,9 +105,13 @@ Object.extend(RecordSelect.Abstract.prototype, {
    * positions and reveals the recordselect
    */
   show: function() {
-    var offset = Position.cumulativeOffset(this.obj);
+    var offset = Position.cumulativeOffset(this.obj),
+        top = Element.getHeight(this.obj) + offset[1],
+        window_height = document.viewport.getHeight();
     this.container.style.left = offset[0] + 'px';
-    this.container.style.top = (Element.getHeight(this.obj) + offset[1]) + 'px';
+    if (top + Element.getHeight(this.container) > window_height)
+      this.container.style.bottom = (window_height - offset[1]) + 'px';
+    else this.container.style.top = top + 'px';
 
     if (this._use_iframe_mask()) {
       this.container.insertAdjacentHTML('afterEnd', '<iframe src="javascript:false;" class="record-select-mask" />');

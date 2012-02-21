@@ -239,8 +239,8 @@ RecordSelect.Abstract = Class.extend({
     var offset = this.obj.offset(), top = this.obj.height() + offset.top;
     this.container.show();
     this.container.css('left', offset.left);
-    if (top + this.container.height() > $(document).height())
-      this.container.css('top', offset.top - this.container.height());
+    if (top + this.container.height() > $(window).height())
+      this.container.css('bottom', $(window).height() - offset.top);
     else this.container.css('top', top);
 
     if (this._use_iframe_mask()) {
