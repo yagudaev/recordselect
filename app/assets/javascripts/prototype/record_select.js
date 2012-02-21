@@ -187,8 +187,8 @@ Object.extend(RecordSelect.Abstract.prototype, {
     }.bind(this));
 
     // keyboard navigation, if available
-    if (this.onkeypress) {
-      text_field.observe('keypress', this.onkeypress.bind(this));
+    if (this.onkeydown) {
+      text_field.observe('keydown', this.onkeydown.bind(this));
     }
   },
 
@@ -206,7 +206,7 @@ Object.extend(RecordSelect.Abstract.prototype, {
   /**
    * keyboard navigation - where to intercept the keys is up to the concrete class
    */
-  onkeypress: function(ev) {
+  onkeydown: function(ev) {
     var elem;
     switch (ev.keyCode) {
       case Event.KEY_UP:

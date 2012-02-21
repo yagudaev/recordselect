@@ -316,8 +316,8 @@ RecordSelect.Abstract = Class.extend({
     text_field.keyup($.proxy(this, 'onkeyup'));
 
     // keyboard navigation, if available
-    if (this.onkeypress) {
-      text_field.keypress($.proxy(this, "onkeypress"));
+    if (this.onkeydown) {
+      text_field.keydown($.proxy(this, "onkeydown"));
     }
   },
 
@@ -337,7 +337,7 @@ $.extend(RecordSelect.Abstract.prototype, {
   /**
    * keyboard navigation - where to intercept the keys is up to the concrete class
    */
-  onkeypress: function(ev) {
+  onkeydown: function(ev) {
     var elem;
     switch (ev.keyCode) {
       case 38: //Event.KEY_UP
