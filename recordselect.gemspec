@@ -15,12 +15,10 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [
     "README"
   ]
-  s.files = Dir["{app,lib}/**/*"] + %w[MIT-LICENSE CHANGELOG README]
+  s.files = `git ls-files {app,config,lib}`.split("\n") + %w[MIT-LICENSE CHANGELOG README]
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.test_files = [
-    "test/recordselect_test.rb"
-  ]
+  s.test_files = `git ls-files test`.split("\n")
   
   s.add_development_dependency(%q<shoulda>, [">= 0"])
   s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
