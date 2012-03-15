@@ -422,7 +422,7 @@ RecordSelect.Single = RecordSelect.Abstract.extend({
     this.obj.attr('name', this.options.field_name || '');
 
     // initialize the values
-    this.set(this.options.id, this.options.label);
+    if (this.options.label) this.set(this.options.id, this.options.label);
 
     this._respond_to_text_field(this.obj);
     if (this.obj.focused) this.open(); // if it was focused before we could attach observers
@@ -464,7 +464,7 @@ RecordSelect.Autocomplete = RecordSelect.Abstract.extend({
     this.container.addClass('record-select-autocomplete');
 
     // initialize the values
-    this.set(this.options.label);
+    if (this.options.label) this.set(this.options.label);
 
     this._respond_to_text_field(this.obj);
     if (this.obj.focused) this.open(); // if it was focused before we could attach observers
