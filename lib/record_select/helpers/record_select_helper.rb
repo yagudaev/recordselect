@@ -129,6 +129,7 @@ module RecordSelectHelper
     record_select_options[:current] = current.inject([]) { |memo, record| memo.push({:id => record.id, :label => label_for_field(record, controller)}) }
 
     html = text_field_tag("#{name}[]", nil, options.merge(:autocomplete => 'off', :onfocus => "this.focused=true", :onblur => "this.focused=false"))
+    html << hidden_field_tag("#{name}[]", '', :id => nil)
     html << content_tag('ul', '', :class => 'record-select-list');
 
     # js identifier so we can talk to it.

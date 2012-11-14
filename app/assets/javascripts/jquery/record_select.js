@@ -507,7 +507,7 @@ RecordSelect.Multiple = RecordSelect.Abstract.extend({
 
     // decide where the <li> entries should be placed
     if (this.options.list) this.list_container = jQuery(this.options.list);
-    else this.list_container = this.obj.next('ul');
+    else this.list_container = this.obj.siblings('ul');
 
     // take the input name from the text input, and store it for this.add()
     this.input_name = this.obj.attr('name');
