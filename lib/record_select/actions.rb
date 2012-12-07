@@ -4,16 +4,11 @@ module RecordSelect
     # params => [:page, :search]
     def browse
       conditions = record_select_conditions
-      klass = record_select_model
-      @count = klass.count(:conditions => conditions, :include => record_select_includes)
+      klass = record_select_model.where(conditions).includes(record_select_includes)
+      @count = klass.count
       @count = @count.length if @count.is_a? ActiveSupport::OrderedHash
       pager = ::Paginator.new(@count, record_select_config.per_page) do |offset, per_page|
-        klass.find(:all, :offset => offset,
-                         :select => record_select_select||"*",
-                         :include => [record_select_includes, record_select_config.include].flatten.compact,
-                         :limit => per_page,
-                         :conditions => conditions,
-                         :order => record_select_config.order_by)
+        klass.select(record_select_select).includes(record_select_config.include).order(record_select_config.order_by).limit(per_page).offset(offset).all
       end
       @page = pager.page(params[:page] || 1)
 
