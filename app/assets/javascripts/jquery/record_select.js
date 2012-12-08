@@ -219,10 +219,11 @@ RecordSelect.Abstract = Class.extend({
   open: function() {
     if (this.is_open()) return;
     var _this = this;
+    $.rails.fire(_this.obj, 'rs:before');
     jQuery.ajax({
       url: this.url,
       //type: "POST",
-      //data: options['params'],
+      data: _this.obj.data('params'),
       //dataType: options.ajax_data_type,
       success: function(data){
         _this.container.html(data);
