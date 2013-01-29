@@ -43,7 +43,7 @@ module RecordSelectHelper
     params = options.delete(:params)
     record_select_options = {}
     record_select_options[:field_name] = options.delete(:field_name) if options[:field_name]
-    if current and not current.new_record?
+    if current
       record_select_options[:id] = current.id
       record_select_options[:label] = label_for_field(current, controller)
     end
