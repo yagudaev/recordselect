@@ -124,7 +124,7 @@ if (typeof(jQuery.fn.delayedObserver) === 'undefined') {
 
 jQuery(document).ready(function() {
   RecordSelect.document_loaded = true;
-  jQuery('div.record-select * li.record a').live('ajax:before', function(event) {
+  jQuery(document).on('ajax:before', 'div.record-select * li.record a', function(event) {
     var link = jQuery(this);
     if (link) {
       if (RecordSelect.notify(link) == false) {
