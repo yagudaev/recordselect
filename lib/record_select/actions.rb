@@ -16,7 +16,7 @@ module RecordSelect
         wants.html { render_record_select :partial => 'browse'}
         wants.js {
           if params[:update]
-            render_record_select :template => 'browse.js', :layout => false
+            render_record_select :template => 'browse'
           else
             render_record_select :partial => 'browse'
           end
