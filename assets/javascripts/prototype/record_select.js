@@ -61,6 +61,9 @@ Object.extend(RecordSelect.Abstract.prototype, {
     this.url = url;
     this.options = options;
     this.container;
+    if (this.options.onchange && typeof(this.options.onchange) != 'function') {
+      this.options.onchange = eval(this.options.onchange);
+    }
 
     if (RecordSelect.document_loaded) this.onload();
     else Event.observe(window, 'load', this.onload.bind(this));
