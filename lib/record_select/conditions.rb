@@ -83,12 +83,14 @@ module RecordSelect
 
     # generates an SQL condition for the given column/value
     def record_select_condition_for_column(column, value)
+      model = record_select_config.model
+      column_name = model.quoted_table_name + '.' + model.connection.quote_column_name(column.name)
       if value.blank? and column.null
-        "#{column.name} IS NULL"
+        "#{column_name} IS NULL"
       elsif column.text?
-        ["LOWER(#{column.name}) LIKE ?", value]
+        ["LOWER(#{column_name}) LIKE ?", value]
       else
-        ["#{column.name} = ?", column.type_cast(value)]
+        ["#{column_name} = ?", column.type_cast(value)]
       end
     end
 
