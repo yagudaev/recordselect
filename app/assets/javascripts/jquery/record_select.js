@@ -61,7 +61,7 @@ if (typeof(Class) === 'undefined') {
       return Class;
     };
   })();
-};
+}
 
 /*
  jQuery delayed observer
@@ -120,7 +120,7 @@ if (typeof(jQuery.fn.delayedObserver) === 'undefined') {
       }
     });
   })();
-};
+}
 
 jQuery(document).ready(function() {
   RecordSelect.document_loaded = true;
@@ -136,20 +136,6 @@ jQuery(document).ready(function() {
     return true;
   });
 });
-
-/**
-Form.Element.AfterActivity = function(element, callback, delay) {
-  element = jQuery(element);
-  if (!delay) delay = 0.25;
-  new Form.Element.Observer(element, delay, function(element, value) {
-    // TODO: display loading indicator
-    if (element.activity_timer) clearTimeout(element.activity_timer);
-    element.activity_timer = setTimeout(function() {
-      callback(element.value);
-    }, delay * 1000 + 50);
-  });
-}
-*/
 
 var RecordSelect = new Object();
 RecordSelect.document_loaded = false;
@@ -170,6 +156,11 @@ RecordSelect.notify = function(item) {
     return false;
   }
   else return true;
+}
+
+RecordSelect.observe = function(id) {
+  var form = jQuery("#" + id);
+  form.find('input.text-input').delayedObserver(0.35, function() { form.trigger("submit"); });
 }
 
 RecordSelect.render_page = function(record_select_id, page) {
@@ -410,9 +401,13 @@ RecordSelect.Dialog = RecordSelect.Abstract.extend({
  */
 RecordSelect.Single = RecordSelect.Abstract.extend({
   onload: function() {
+    var rs = this;
     // initialize the container
     this.container = this.create_container();
     this.container.addClass('record-select-autocomplete');
+    this.container.submit(function() {
+      rs.hidden_input.val('');
+    });
 
     // create the hidden input
     this.obj.after('<input type="hidden" name="" value="" />');

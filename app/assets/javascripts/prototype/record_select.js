@@ -44,6 +44,11 @@ RecordSelect.notify = function(item) {
   else return true;
 };
 
+RecordSelect.observe = function(id) {
+  var form = $(id);
+  Form.Element.AfterActivity(form.down('input.text-input'), function() { form.down('input.search_submit').click(); }, 0.35);
+}
+
 RecordSelect.render_page = function(record_select_id, page) {
   var page_element = $$('#' + record_select_id + ' ol')[0];
   if (page_element) Element.replace(page_element, page);
@@ -285,6 +290,9 @@ RecordSelect.Single.prototype = Object.extend(new RecordSelect.Abstract(), {
     // initialize the container
     this.container = this.create_container();
     this.container.addClassName('record-select-autocomplete');
+    this.container.observe('submit', function() {
+      this.hidden_input.value = '';
+    }.bind(this));
 
     // create the hidden input
     new Insertion.After(this.obj, '<input type="hidden" name="" value="" />')
