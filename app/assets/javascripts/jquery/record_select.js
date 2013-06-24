@@ -421,7 +421,7 @@ RecordSelect.Single = RecordSelect.Abstract.extend({
     if (this.options.label) this.set(this.options.id, this.options.label);
 
     this._respond_to_text_field(this.obj);
-    if (this.obj.focused) this.open(); // if it was focused before we could attach observers
+    if (this.obj.prop('focused')) this.open(); // if it was focused before we could attach observers
   },
 
   close: function() {
