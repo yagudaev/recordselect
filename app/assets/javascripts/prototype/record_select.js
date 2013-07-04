@@ -236,13 +236,15 @@ Object.extend(RecordSelect.Abstract.prototype, {
         elem = this.container.down('li.pagination.previous');
         if (elem) elem.down('a').onclick();
         break;
-      case Event.KEY_ESC:
+      case Event.KEY_ESC, Event.KEY_TAB:
         this.close();
         break;
       default:
         return;
     }
-    Event.stop(ev); // so "enter" doesn't submit the form, among other things(?)
+    if (ev.keyCode != Event.KEY_TAB) { // don't prevent tabbing
+      Event.stop(ev); // so "enter" doesn't submit the form, among other things(?)
+    }
   },
 
   /**

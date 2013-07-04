@@ -355,13 +355,15 @@ jQuery.extend(RecordSelect.Abstract.prototype, {
         elem = this.container.find('li.pagination.previous');
         if (elem) elem.find('a').click();
         break;
-      case 27: // Event.KEY_ESC
+      case 27, 9: // Event.KEY_ESC, Event.KEY_TAB
         this.close();
         break;
       default:
         return true;
     }
-    ev.preventDefault(); // so "enter" doesn't submit the form, among other things(?)
+    if (ev.keyCode != 9) { // don't prevent tabbing
+      ev.preventDefault(); // so "enter" doesn't submit the form, among other things(?)
+    }
   },
 
   /**
