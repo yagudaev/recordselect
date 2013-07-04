@@ -160,7 +160,9 @@ RecordSelect.notify = function(item) {
 
 RecordSelect.observe = function(id) {
   var form = jQuery("#" + id);
-  form.find('input.text-input').delayedObserver(0.35, function() { form.trigger("submit"); });
+  form.find('input.text-input').delayedObserver(0.35, function() {
+    if (form.closest('body').length) form.trigger("submit");
+  });
 }
 
 RecordSelect.render_page = function(record_select_id, page) {
@@ -422,13 +424,6 @@ RecordSelect.Single = RecordSelect.Abstract.extend({
 
     this._respond_to_text_field(this.obj);
     if (this.obj.prop('focused')) this.open(); // if it was focused before we could attach observers
-  },
-
-  close: function() {
-    // if they close the dialog with the text field empty, then delete the id value
-    if (this.obj.val() == '') this.set('', '');
-
-    RecordSelect.Abstract.prototype.close.call(this);
   },
 
   onselect: function(id, value) {
