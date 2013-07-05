@@ -94,6 +94,8 @@ Object.extend(RecordSelect.Abstract.prototype, {
   open: function() {
     if (this.is_open()) return;
 
+    this.container.update('');
+    this.show();
     new Ajax.Updater(this.container, this.url, {
       method: 'get',
       evalScripts: true,
@@ -101,7 +103,8 @@ Object.extend(RecordSelect.Abstract.prototype, {
       onComplete: function() {
         this.show();
         // needs to be mousedown so the event doesn't get canceled by other code (see issue #26)
-        Element.observe(document.body, 'mousedown', this.onbodyclick.bindAsEventListener(this));
+        if (!this.container.visible()) this.close();
+        else Element.observe(document.body, 'mousedown', this.onbodyclick.bindAsEventListener(this));
       }.bind(this)
     });
   },

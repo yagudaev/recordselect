@@ -213,6 +213,8 @@ RecordSelect.Abstract = Class.extend({
     if (this.is_open()) return;
     var _this = this;
     jQuery.rails.fire(_this.obj, 'rs:before');
+    _this.container.html('');
+    _this.show();
     jQuery.ajax({
       url: this.url,
       //type: "POST",
@@ -220,8 +222,8 @@ RecordSelect.Abstract = Class.extend({
       //dataType: options.ajax_data_type,
       success: function(data){
         _this.container.html(data);
-        _this.show();
-        jQuery(document.body).mousedown(jQuery.proxy(_this, "onbodyclick"));
+        if (!_this.container.is(':visible')) _this.close();
+        else jQuery(document.body).mousedown(jQuery.proxy(_this, "onbodyclick"));
       }
     });
   },
