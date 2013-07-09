@@ -239,7 +239,8 @@ Object.extend(RecordSelect.Abstract.prototype, {
         elem = this.container.down('li.pagination.previous');
         if (elem) elem.down('a').onclick();
         break;
-      case Event.KEY_ESC, Event.KEY_TAB:
+      case Event.KEY_ESC:
+      case Event.KEY_TAB:
         this.close();
         break;
       default:
