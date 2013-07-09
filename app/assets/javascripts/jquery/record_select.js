@@ -235,9 +235,13 @@ RecordSelect.Abstract = Class.extend({
     var offset = this.obj.offset(), top = this.obj.height() + offset.top;
     this.container.show();
     this.container.css('left', offset.left);
-    if (top + this.container.height() > jQuery(window).height())
+    if (top + this.container.height() > jQuery(window).height()) {
       this.container.css('bottom', jQuery(window).height() - offset.top);
-    else this.container.css('top', top);
+      this.container.css('top', '');
+    } else {
+      this.container.css('top', top);
+      this.container.css('bottom', '');
+    }
 
     if (this._use_iframe_mask()) {
       this.container.after('<iframe src="javascript:false;" class="record-select-mask" />');
