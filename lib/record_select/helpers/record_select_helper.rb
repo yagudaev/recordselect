@@ -14,7 +14,7 @@ module RecordSelectHelper
     assert_controller_responds(options[:params][:controller])
 
     html = link_to_function(name, '', options[:html])
-    html << javascript_tag("new RecordSelect.Dialog(#{options[:html][:id].to_json}, #{url_for(options[:params].merge(:escape => false)).to_json}, {onselect: #{options[:onselect] || ''}})")
+    html << javascript_tag("new RecordSelect.Dialog(#{options[:html][:id].to_json}, #{url_for(options[:params]).to_json}, {onselect: #{options[:onselect] || ''}})")
 
     return html
   end
@@ -49,7 +49,7 @@ module RecordSelectHelper
     end
 
     html = text_field_tag(name, nil, options.merge(:autocomplete => 'off', :onfocus => "this.focused=true", :onblur => "this.focused=false"))
-    url = url_for({:action => :browse, :controller => controller.controller_path, :escape => false}.merge(params))
+    url = url_for({:action => :browse, :controller => controller.controller_path}.merge(params))
     html << javascript_tag("new RecordSelect.Single(#{options[:id].to_json}, #{url.to_json}, #{record_select_options.to_json});")
 
     return html
@@ -82,7 +82,7 @@ module RecordSelectHelper
     end
 
     html = text_field_tag(name, nil, options.merge(:autocomplete => 'off', :onfocus => "this.focused=true", :onblur => "this.focused=false"))
-    url = url_for({:action => :browse, :controller => controller.controller_path, :escape => false}.merge(params))
+    url = url_for({:action => :browse, :controller => controller.controller_path}.merge(params))
     html << javascript_tag("new RecordSelect.Autocomplete(#{options[:id].to_json}, #{url.to_json}, #{record_select_options.to_json});")
 
     return html
@@ -134,7 +134,7 @@ module RecordSelectHelper
 
     # js identifier so we can talk to it.
     widget = "rs_%s" % name.gsub(/[\[\]]/, '_').chomp('_')
-    url = url_for({:action => :browse, :controller => controller.controller_path, :escape => false}.merge(params))
+    url = url_for({:action => :browse, :controller => controller.controller_path}.merge(params))
     html << javascript_tag("#{widget} = new RecordSelect.Multiple(#{options[:id].to_json}, #{url.to_json}, #{record_select_options.to_json});")
 
     return html
@@ -167,7 +167,7 @@ module RecordSelectHelper
   def render_record_in_list(record, controller_path)
     text = render_record_from_config(record)
     if record_select_config.link?
-      url_options = {:controller => controller_path, :action => :select, :id => record.id, :escape => false}
+      url_options = {:controller => controller_path, :action => :select, :id => record.id}
       link_to text, url_options, :method => :post, :remote => true, :class => ''
     else
       text

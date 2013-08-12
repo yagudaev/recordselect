@@ -2,8 +2,8 @@
 controller ||= params[:controller]
 
 pagination_url_params = params.merge(:controller => controller, :action => :browse, :search => params[:search], :update => 1)
-prev_url = url_for(pagination_url_params.merge(:page => page.prev.number, :escape => false)) if page.prev?
-next_url = url_for(pagination_url_params.merge(:page => page.next.number, :escape => false)) if page.next?
+prev_url = url_for(pagination_url_params.merge(:page => page.prev.number)) if page.prev?
+next_url = url_for(pagination_url_params.merge(:page => page.next.number)) if page.next?
 -%>
 <ol>
   <li class="found"><%= rs_(:records_found, :count => page.pager.count,

@@ -31,7 +31,9 @@ module RecordSelect
     # define special list of selected fields,
     # mainly to define extra fields that can be used for 
     # specialized sorting.
-    def record_select_select; end
+    def record_select_select
+      '*'
+    end
 
     # generate conditions from params[:search]
     # override this if you want to customize the search routine
