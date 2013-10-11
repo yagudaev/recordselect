@@ -90,7 +90,7 @@ module RecordSelect
 
     # whether wrap the text returned by label in a link or not
     def link?
-      @link.nil? ? true : @link
+      @link.nil? || @link
     end
 
     protected
