@@ -103,12 +103,9 @@ jQuery(document).ready(function() {
   RecordSelect.document_loaded = true;
   jQuery(document).on('ajax:before', 'div.record-select * li.record a', function(event) {
     var link = jQuery(this);
-    if (link) {
-      if (RecordSelect.notify(link) == false) {
-        return false;
-      } else {
-        link.toggleClass("selected");
-      }
+    if (link.length) {
+      RecordSelect.select_item(link);
+      return false;
     }
     return true;
   });
@@ -117,12 +114,11 @@ jQuery(document).ready(function() {
 var RecordSelect = new Object();
 RecordSelect.document_loaded = false;
 
-RecordSelect.notify = function(item) {
+RecordSelect.select_item = function(item) {
   var e = item.closest('.record-select-handler');
   var onselect = e.get(0).onselect || e.attr('onselect');
   if (typeof onselect != 'function') onselect = eval(onselect);
-  if (onselect)
-  {
+  if (onselect) {
     try {
       var label = jQuery.trim(item.find('label').first().text());
       if (!label) label = item.text();
@@ -130,9 +126,7 @@ RecordSelect.notify = function(item) {
     } catch(e) {
       alert(e);
     }
-    return false;
   }
-  else return true;
 }
 
 RecordSelect.observe = function(id) {

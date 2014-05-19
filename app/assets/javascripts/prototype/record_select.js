@@ -3,11 +3,8 @@ document.observe("dom:loaded", function() {
   document.on('ajax:before', 'div.record-select * li.record a', function(event) {
     var link = event.findElement();
     if (link) {
-      if (RecordSelect.notify(link) == false) {
-        event.stop();
-      } else {
-        link.toggleClassName("selected");
-      }
+      RecordSelect.select_item(link);
+      event.stop();
     }
     return true;
   });  
@@ -28,20 +25,17 @@ Form.Element.AfterActivity = function(element, callback, delay) {
 var RecordSelect = new Object();
 RecordSelect.document_loaded = false;
 
-RecordSelect.notify = function(item) {
+RecordSelect.select_item = function(item) {
   var e = Element.up(item, '.record-select-handler');
   var onselect = e.onselect || e.getAttribute('onselect');
   if (typeof onselect != 'function') onselect = eval(onselect);
-  if (onselect)
-  {
+  if (onselect) {
     try {
       onselect(item.parentNode.id.substr(2), (item.down('label') || item).innerHTML.unescapeHTML(), e);
     } catch(e) {
       alert(e);
     }
-    return false;
   }
-  else return true;
 };
 
 RecordSelect.observe = function(id) {
