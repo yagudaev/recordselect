@@ -101,7 +101,7 @@ if (typeof(jQuery.fn.delayedObserver) === 'undefined') {
 
 jQuery(document).ready(function() {
   RecordSelect.document_loaded = true;
-  jQuery(document).on('ajax:before', 'div.record-select * li.record a', function(event) {
+  jQuery(document).on('click', 'div.record-select li.record', function(event) {
     var link = jQuery(this);
     if (link.length) {
       RecordSelect.select_item(link);

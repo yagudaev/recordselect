@@ -17,8 +17,6 @@ module RecordSelect
       @label = options[:label]
 
       @include = options[:include]
-
-      @link = options[:link]
     end
     
     def self.js_framework=(framework)
@@ -86,11 +84,6 @@ module RecordSelect
     #
     def label
       @label ||= proc {|r| r.to_label}
-    end
-
-    # whether wrap the text returned by label in a link or not
-    def link?
-      @link.nil? || @link
     end
 
     protected

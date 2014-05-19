@@ -163,16 +163,6 @@ module RecordSelectHelper
   end
 
   private
-  # render the record using the renderer and add a link to select the record
-  def render_record_in_list(record, controller_path)
-    text = render_record_from_config(record)
-    if record_select_config.link?
-      link_to text, '#', :remote => true
-    else
-      text
-    end
-  end
-
 
   # uses renderer (defaults to record_select_config.label) to determine how the given record renders.
   def render_record_from_config(record, renderer = record_select_config.label)

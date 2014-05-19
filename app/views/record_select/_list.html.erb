@@ -18,7 +18,7 @@ next_url = url_for(pagination_url_params.merge(:page => page.next.number)) if pa
   <% end -%>
   <% page.items.each do |record| -%>
   <li class="record <%= cycle 'odd', 'even' %>" id="rs<%= record.id -%>">
-    <%= render_record_in_list(record, controller) %>
+    <%= render_record_from_config(record) %>
   </li>
   <% end -%>
   <% if page.next? -%>

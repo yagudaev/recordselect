@@ -38,19 +38,19 @@
   clear: both;
 }
 
-.record-select a {
+.record-select .record, .record-select a {
+  cursor: pointer;
   color: #0066cc;
   text-decoration: none;
 }
 
-.record-select ol a {
+.record-select ol .record, .record-select ol a {
   display: block;
-  zoom: 1;
   background-color: #e6f2ff;
   padding: 2px 4px;
 }
 
-.record-select ol .even a {
+.record-select ol .even {
   background-color: #ffffff;
 }
 
@@ -70,6 +70,16 @@
   vertical-align: middle;
 }
 
+.record-select ol .current,
+.record-select ol li:hover {
+  background-color: #ffff88;
+}
+.record-select ol li a:hover {
+  color: inherit;
+  background-color: inherit;
+}
+
+.record-select ol li.found:hover,
 .record-select ol .found {
   text-align: center;
   font-style: italic;
@@ -78,14 +88,8 @@
   border-bottom: 1px solid #afd0f5;
 }
 
-.record-select ol .current a,
-.record-select ol a:hover {
-  background-color: #ffff88;
-}
-
-.record-select ol a.selected {
-  background-color: #666;
-  color: #fff;
+.record-select ol li.found:hover {
+  background-color: inherit;
 }
 
 .record-select-container {
