@@ -31,7 +31,7 @@ RecordSelect.select_item = function(item) {
   if (typeof onselect != 'function') onselect = eval(onselect);
   if (onselect) {
     try {
-      onselect(item.parentNode.id.substr(2), (item.down('label') || item).innerHTML.unescapeHTML(), e);
+      onselect(item.id.substr(2), (item.down('label') || item).innerHTML.unescapeHTML(), e);
     } catch(e) {
       alert(e);
     }
