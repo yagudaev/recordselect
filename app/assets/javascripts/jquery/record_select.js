@@ -122,7 +122,7 @@ RecordSelect.select_item = function(item) {
     try {
       var label = jQuery.trim(item.find('label').first().text());
       if (!label) label = item.text();
-      onselect(item.parent().attr('id').substr(2), label, e);
+      onselect(item.attr('id').substr(2), label, e);
     } catch(e) {
       alert(e);
     }
