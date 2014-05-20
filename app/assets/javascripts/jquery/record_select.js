@@ -206,15 +206,19 @@ RecordSelect.Abstract = Class.extend({
    * positions and reveals the recordselect
    */
   show: function() {
-    var offset = this.obj.offset(), top = this.obj.height() + offset.top;
+    var offset = this.obj.offset()
+    if (this.fixed) offset.top -= jQuery(window).scrollTop(); // get fixed position
+    var top = this.obj.outerHeight() + offset.top;
+    
     this.container.show();
     this.container.css('left', offset.left);
-    if (top + this.container.height() > jQuery(window).height()) {
+    this.container.css('top', '');
+    this.container.css('bottom', '');
+    if (this.fixed && top + this.container.outerHeight() > jQuery(window).height()) {
       this.container.css('bottom', jQuery(window).height() - offset.top);
-      this.container.css('top', '');
     } else {
       this.container.css('top', top);
-      this.container.css('bottom', '');
+      if (!this.container.visible()) this.container.css('top', top - this.obj.outerHeight() - this.container.outerHeight());
     }
 
     if (this._use_iframe_mask()) {
@@ -267,8 +271,15 @@ RecordSelect.Abstract = Class.extend({
    * creates and initializes (and returns) the recordselect container
    */
   create_container: function() {
-    var e = jQuery("<div />", {'class': "record-select-container record-select-handler"});
-    e.css('display', 'none')
+    var e = jQuery("<div />", {'class': "record-select-container record-select-handler"}), rs = this;
+    e.css('display', 'none');
+    jQuery(this.obj).add(this.obj.parents()).each(function() {
+      if (jQuery(this).css('position') == 'fixed') {
+        rs.fixed = jQuery(this);
+        e.css('position', 'fixed');
+        return false;
+      }
+    });
     jQuery(document.body).append(e);
     e.get(0).onselect = jQuery.proxy(this, "onselect")
     return e;
